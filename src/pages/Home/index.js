@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { formatPrice } from '../../util/format';
 import api from '../../services/api';
 
-// import * as CartActions from '../../store/modules/cart/actions';
+import * as CartActions from '../../store/modules/cart/actions';
 
 import { ProductList } from './styles';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  // const amount = useSelector((state) =>
-  //   state.cart.reduce((sumAmount, product) => {
-  //     sumAmount[product.id] = product.amount;
+  const amount = useSelector((state) =>
+    state.cart.reduce((sumAmount, product) => {
+      sumAmount[product.id] = product.amount;
 
-  //     return sumAmount;
-  //   }, {})
-  // );
+      return sumAmount;
+    }, {})
+  );
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadProducts() {
@@ -35,9 +35,9 @@ export default function Home() {
     loadProducts();
   }, []);
 
-  // function handleAddProduct(id) {
-  //   dispatch(CartActions.addToCartRequest(id));
-  // }
+  function handleAddProduct(id) {
+    dispatch(CartActions.addToCartRequest(id));
+  }
 
   return (
     <ProductList>
@@ -47,14 +47,14 @@ export default function Home() {
           <strong>{product.title}</strong>
           <span>{product.priceFormatted}</span>
 
-          {/* <button type="button" onClick={() => handleAddProduct(product.id)}> */}
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" />{' '}
-            {/* {amount[product.id] || 0} */}
-          </div>
+          <button type="button" onClick={() => handleAddProduct(product.id)}>
+            <div>
+              <MdAddShoppingCart size={16} color="#FFF" />{' '}
+              {amount[product.id] || 0}
+            </div>
 
-          <span>ADICIONAR AO CARRINHO</span>
-          {/* </button> */}
+            <span>ADICIONAR AO CARRINHO</span>
+          </button>
         </li>
       ))}
     </ProductList>
